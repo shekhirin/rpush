@@ -5,8 +5,6 @@ module Rpush
         include Rpush::MultiJsonHelper
         include Rpush::Client::ActiveModel::Notification
 
-        before_create :set_expire_at
-
         self.table_name = 'rpush_notifications'
 
         serialize :registration_ids
@@ -31,22 +29,16 @@ module Rpush
           super
         end
 
+        def expire_at=(expire_at)
+          write_attribute(:expire_at, expire_at)
+        end
+
         def data
           multi_json_load(read_attribute(:data)) if read_attribute(:data)
         end
 
         def notification
           multi_json_load(read_attribute(:notification)) if read_attribute(:notification)
-        end
-
-        private
-
-        def set_expire_at
-          self.expire_at = Time.now + expiry
-        end
-
-        def is_expired?
-          self.expire_at > Time.now
         end
       end
     end
