@@ -5,7 +5,7 @@ module Rpush
         include Rpush::MultiJsonHelper
         include Rpush::Client::ActiveModel::Notification
 
-        after_create :set_expire_at
+        before_create :set_expire_at
 
         self.table_name = 'rpush_notifications'
 
