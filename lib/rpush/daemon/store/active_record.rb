@@ -196,7 +196,7 @@ module Rpush
         end
 
         def ready_for_delivery
-          relation = Rpush::Client::ActiveRecord::Notification.where('processing = ? AND delivered = ? AND failed = ? AND (deliver_after IS NULL OR deliver_after < ?)', false, false, false, Time.now)
+          relation = Rpush::Client::ActiveRecord::Notification.where('processing = ? AND delivered = ? AND failed = ? AND (deliver_after IS NULL OR deliver_after < ?) AND (expire_at IS NULL OR expire_at > ?)', false, false, false, Time.now, Time.now)
           relation.order('deliver_after ASC, created_at ASC')
         end
 
