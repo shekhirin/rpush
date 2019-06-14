@@ -88,8 +88,13 @@ describe Rpush::Daemon::Store::ActiveRecord do
       expect(store.deliverable_notifications(Rpush.config.batch_size)).to be_empty
     end
 
-    it "does not enqueue a notification that has previously failed delivery" do
+    it 'does not enqueue a notification that has previously failed delivery' do
       notification.update_attributes!(delivered: false, failed: true)
+      expect(store.deliverable_notifications(Rpush.config.batch_size)).to be_empty
+    end
+
+    it 'does not load an expired notification' do
+      notification.update_attributes!(delivered: false, deliver_after: nil, expiry: 0)
       expect(store.deliverable_notifications(Rpush.config.batch_size)).to be_empty
     end
   end
