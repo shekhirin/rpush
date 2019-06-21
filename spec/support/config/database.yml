@@ -6,7 +6,6 @@ postgresql:
   host: localhost
   username: postgres
   password: ""
-  port: 6432
 
 jdbcpostgresql:
   adapter: jdbcpostgresql
